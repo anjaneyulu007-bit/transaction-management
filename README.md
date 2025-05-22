@@ -1,9 +1,9 @@
 # transaction-management
 
-1) Access H2 Console:http://localhost:8080/h2-console.
-	Use JDBC URL: jdbc:h2:mem:testdb,
-	username: sa,
-	password: (empty).
+1) Access H2 Console:http://localhost:8080/h2-console.\n
+	Use JDBC URL: jdbc:h2:mem:testdb,\n
+	username: sa,\n
+	password: (empty).\n\n
 
 2) Register a User:
 	Endpoint: POST /api/auth/register
