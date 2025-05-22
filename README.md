@@ -1,11 +1,11 @@
 # transaction-management
 
-1) Access H2 Console:http://localhost:8080/h2-console.\n
-	Use JDBC URL: jdbc:h2:mem:testdb,\n
-	username: sa,\n
-	password: (empty).\n\n
-
-2) Register a User:
+1) Access H2 Console:http://localhost:8080/h2-console.
+   	Use JDBC URL: jdbc:h2:mem:testdb,
+   	username: sa,
+   	password: (empty).
+   
+3) Register a User:
 	Endpoint: POST /api/auth/register
 	URL: http://localhost:8080/api/auth/register
 	Body (JSON):
@@ -15,7 +15,7 @@
 	}
 	Response: No content (HTTP 200 if successful).
 	
-3) Login to Get JWT:
+4) Login to Get JWT:
 	Endpoint: POST /api/auth/login
 	URL: http://localhost:8080/api/auth/login
 	Body (JSON):
@@ -25,7 +25,7 @@
 	}
 	Response: JWT token (e.g., eyJhbGciOiJIUzI1NiIs...).
 	
-4) Retrieve Protected Transaction APIs (GET /api/transactions):
+5) Retrieve Protected Transaction APIs (GET /api/transactions):
 	a) Basic Retrieval:
 		GET http://localhost:8080/api/transactions?page=1
 			
@@ -49,7 +49,7 @@
 		
 		Expected: First page with records.
 		
-5) Update Description (PUT /api/transactions/{id}):
+6) Update Description (PUT /api/transactions/{id}):
 	a) Single Update:
 		PUT http://localhost:8080/api/transactions/8872838299 
 		
@@ -66,7 +66,7 @@
 		
 		Expected: One request succeeds, the other fails with HTTP 500 and message Concurrent update detected. Please retry..
 				
-6) Test Authentication:
+7) Test Authentication:
 	a) Send GET without JWT:
 		GET http://localhost:8080/api/transactions?accountNumber=8872838299
 		
