@@ -1,0 +1,38 @@
+Design Patterns Used:
+-------------------
+The application has several design patterns to ensure modularity, maintainability, and scalability, aligning with OOP principles and RESTful standards.
+
+1) Factory Pattern (TransactionFactory):
+	Why Chosen: Encapsulates object creation logic, promoting the Single Responsibility Principle and making it easier to manage complex object instantiation from raw data (e.g., file parsing).
+	Application: Used in the Spring Batch job (BatchConfig and TransactionItemProcessor) to convert Map<String, String> from dataSource.txt into Transaction entities.
+	Benefit: Simplifies batch processing and allows future extensions (e.g., new file formats) without modifying core logic.
+
+2) Repository Pattern (TransactionRepository, UserRepository):
+	Why Chosen: Abstracts data access logic, providing a clean interface between the business logic and database operations.
+	Application: TransactionRepository handles CRUD operations and custom queries for transactions.
+	Benefit: Simplifies data operations, supports pagination, and isolates database-specific code, improving maintainability.
+
+3) Service Layer Pattern (TransactionService, AuthService):
+	Why Chosen: Separates business logic from controllers, adhering to the Separation of Concerns principle. It centralizes transaction and authentication logic, making the code reusable, testable, and easier to maintain.
+	Application: TransactionService manages transaction retrieval (findTransactions) and updates (updateTransaction) with optimistic locking, while AuthService handles user registration and login with JWT generation.
+	Benefit: Encapsulates complex logic (e.g., concurrency handling), reduces controller bloat.
+
+4) Filter Pattern (JwtRequestFilter):
+	Why Chosen: Implements the Chain of Responsibility pattern to intercept and process HTTP requests, centralizing authentication logic for securing endpoints.
+	Application: JwtRequestFilter validates JWT tokens in the Authorization header for /api/transactions/** requests, setting the security context if valid.
+	Benefit: Ensures consistent security across endpoints, simplifies authentication logic, and supports stateless sessions.
+
+5) Data Transfer Object (DTO) Pattern (AuthRequest, Transaction):
+	Why Chosen: Defines structured payloads for API requests, ensuring input validation and reducing coupling between client and server data models. It aligns with RESTful standards for clear data contracts.
+	Application: AuthRequest handles username and password for /api/auth endpoints, while UpdateDescriptionRequest validates description for PUT /api/transactions/{id}.
+	Benefit: Improves API clarity, validates inputs, and prevents overexposure of entity fields.
+
+6) Optimistic Locking Pattern (@Version in Transaction):
+	Why Chosen: Ensures data integrity for concurrent updates without database-level locking, which is critical for the requirement to “handle concurrent update.” It’s lightweight and suitable for web applications with low contention.
+	Application: The version field in Transaction triggers ObjectOptimisticLockingFailureException (caught in TransactionService) when concurrent PUT requests conflict, mapped to HTTP 409 Conflict in TransactionController.
+	Benefit: Prevents data corruption, provides clear feedback for conflicts, and avoids performance overhead of pessimistic locking.
+
+7) Template Method Pattern (Spring Batch Framework):
+	Why Chosen: Leverages Spring Batch’s predefined job execution structure, allowing customization of steps (reader, processor, writer) while reusing the framework’s orchestration logic.
+	Application: BatchConfig defines a job (importTransactionJob) with a step that uses FlatFileItemReader, TransactionItemProcessor, and JpaItemWriter to read, process, and persist transactions.
+	Benefit: Reduces boilerplate code, ensures robust batch processing, and handles retries and failures automatically.
